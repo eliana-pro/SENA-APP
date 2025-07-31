@@ -47,8 +47,9 @@
         }
 
         .alert-info {
-            border-left: 4px solid #41464b;
-            background-color: #41464b
+            border-left: 4px solid #36d1af9a;
+            background-color: #407963af
+            text-color: white;
         }
 
         .badge {
@@ -79,6 +80,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'aprendices:lista_aprendices' %}">Aprendices</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'programas:lista_programas' %}">Programas</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'admin:index' %}">Panel Admin</a>
