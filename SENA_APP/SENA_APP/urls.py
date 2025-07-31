@@ -21,4 +21,7 @@ from  django.urls import include
 urlpatterns = [
     path('', include('aprendices.urls')),
     path('admin/', admin.site.urls),
+    path('', include('instructores.urls')),
 ]
+
+admin.site.site_header = 'Panel Administrativo '
