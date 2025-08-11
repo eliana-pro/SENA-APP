@@ -1,6 +1,8 @@
 from django.http import HttpResponse
 from django.template import loader
 from .models import Aprendiz
+from .models import Curso
+from django.shortcuts import get_object_or_404
 def aprendices(request):
     lista_aprendices = Aprendiz.objects.all().order_by('apellido', 'nombre')
     template = loader.get_template('lista_aprendices.html')
@@ -12,4 +14,47 @@ def aprendices(request):
 
 def inicio(request):
     template = loader.get_template('inicio.html')
+    total_aprendices = Aprendiz.objects.count()
+    total_cursos = Curso.objects.count()
+    cursos_activos = Curso.objects.filter(estado__in=['INI', 'EJE']).count()
+    
+    context = {
+        'total_aprendices': total_aprendices,
+        'total_cursos': total_cursos,
+        'cursos_activos': cursos_activos,
+    }
     return HttpResponse(template.render())
+
+
+def lista_cursos(request):
+    cursos = Curso.objects.all().order_by('-fecha_inicio')
+    template = loader.get_template('lista_cursos.html')
+    context = {
+        'lista_cursos': cursos,
+        'total_cursos': cursos.count(),
+        'titulo': 'Lista de Cursos',
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def detalle_curso(request, curso_id):
+    curso = get_object_or_404(Curso, id=curso_id)
+    aprendices_curso = curso.aprendizcurso_set.all()
+    instructores_curso = curso.instructorcurso_set.all()
+    template = loader.get_template('detalle_curso.html')
+    
+    context = {
+        'curso': curso,
+        'aprendices_curso': aprendices_curso,
+        'instructores_curso': instructores_curso,
+    }
+    return HttpResponse(template.render(context, request))
+
+def detalle_aprendiz(request, aprendiz_id):
+    aprendiz = get_object_or_404(Aprendiz, id=aprendiz_id)
+    template = loader.get_template('detalle_aprendiz.html')
+    
+    context = {
+        'aprendiz': aprendiz,
+    }
+    return HttpResponse(template.render(context, request))
